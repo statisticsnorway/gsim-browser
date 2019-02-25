@@ -7,7 +7,8 @@ COPY package.json yarn.lock ./
 RUN yarn
 
 # Actual build
-COPY . ./
+COPY ./src ./src
+COPY ./public ./public
 ENV REACT_APP_LDS "/lds"
 RUN yarn build
 
