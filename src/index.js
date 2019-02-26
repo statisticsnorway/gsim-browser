@@ -9,15 +9,17 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 let endpoint
 
-if (process.env.REACT_APP_LDS === undefined) {
+if (window._env_.REACT_APP_LDS === undefined) {
   endpoint = 'http://localhost:9090/'
 } else {
-  endpoint = process.env.REACT_APP_LDS
+  endpoint = window._env_.REACT_APP_LDS
 
   if (!endpoint.endsWith('/')) {
-    endpoint = process.env.REACT_APP_LDS + '/'
+    endpoint = window._env_.REACT_APP_LDS + '/'
   }
 }
+
+console.log("Environment is: ", window._env_)
 
 const properties = {
   name: 'GSIM',
