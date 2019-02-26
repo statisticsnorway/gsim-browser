@@ -175,7 +175,7 @@ class Import extends Component {
         <Header as='h1' content={UI.IMPORT[languageCode]} subheader={UI.IMPORT_DESCRIPTION[languageCode]} dividing
                 icon={{name: 'share', color: 'teal'}} />
         <Container fluid textAlign='center'>
-          <Button size='massive' color='teal' icon='upload' content={UI.UPLOAD[languageCode]}
+          <Button size='massive' color='teal' icon='upload' content={UI.SELECT_FILE[languageCode]}
                   onClick={this.uploadButtonClick} />
           <input ref={this.fileUploader} type='file' multiple onChange={(event) => {this.handleUploadInput(event)}}
                  style={{display: 'none'}} accept='application/json' />

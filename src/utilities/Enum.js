@@ -70,6 +70,10 @@ export const UI = {
     en: 'Import',
     nb: 'Importér'
   },
+  DATA_MENU: {
+    en: 'Data',
+    nb: 'Data'
+  },
   IMPORT_DESCRIPTION: {
     en: 'Import example data to LDS. The upload checks for some missing fields and valid JSON-format before submitting. LDS will return with errors if there are any.',
     nb: 'Importér eksempeldata til LDS. Opplastingen sjekker etter noen manglende felter og gyldig JSON-format før den sender dataene. LDS returnerer med feil hvis det er noen.'
@@ -102,7 +106,7 @@ export const UI = {
     en: 'Show all',
     nb: 'Vis alle'
   },
-  UPLOAD: {
+  SELECT_FILE: {
     en: 'Select files',
     nb: 'Velg filer'
   }

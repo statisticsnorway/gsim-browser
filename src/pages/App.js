@@ -20,6 +20,7 @@ import { LANGUAGES, MESSAGES, UI } from '../utilities/Enum'
 import Home from './Home'
 import Import from '../components/Import'
 import NotFound from './NotFound'
+import Data from "./Data";
 
 class App extends Component {
   constructor (props) {
@@ -146,6 +147,11 @@ class App extends Component {
             </Dropdown.Menu>
           </Dropdown>
           <Menu.Item as={Link} to='/gsim/import' content={UI.IMPORT[languageCode]} name='import' />
+          <Dropdown item text={UI.DATA_MENU[languageCode]} scrolling disabled={!ready}>
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to={"/gsim/data/datasetId"} content="Dataset name" />
+            </Dropdown.Menu>
+          </Dropdown>
           <Menu.Menu position='right'>
             <Menu.Item>
               <Input labelPosition='right' value={namespace} onChange={this.changeNamespace}>
@@ -211,6 +217,10 @@ class App extends Component {
 
             <Route path='/gsim/import' exact component={() => <Import endpoint={endpoint} namespace={namespace}
                                                                       languageCode={languageCode} />} />
+
+            <Route path='/gsim/data' component={() => <Data endpoint={endpoint} namespace={namespace}
+                                                                      languageCode={languageCode} />} />
+
             <Route component={({location}) => <NotFound location={location} languageCode={languageCode} />} />
           </Switch>
         </Container>
