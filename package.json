@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start" : "chmod +x ./docker/env.bash && ./docker/env.bash && cp ./env-config.js ./public/ && react-scripts start",
-    "build": "sh -ac '. ./.env; react-scripts build'",
+    "build": "sh -ac '. ./docker/env; react-scripts build'",
     "test": "react-scripts test",
     "coverage": "react-scripts test --coverage --collectCoverageFrom=**/src/** --collectCoverageFrom=!**/src/index.js --collectCoverageFrom=!**/src/utilities/Fetch.js",
     "eject": "react-scripts eject"

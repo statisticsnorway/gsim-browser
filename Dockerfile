@@ -11,7 +11,7 @@ COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/build /usr/share/nginx/html
 WORKDIR /usr/share/nginx/html
 COPY ./docker/env.bash ./env.sh
-COPY .env .
+COPY ./docker/env ./.env
 RUN chmod +x ./env.sh
 EXPOSE 80
 #CMD ["nginx", "-g", "daemon off;"]
