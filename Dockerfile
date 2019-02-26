@@ -14,5 +14,4 @@ COPY ./docker/env.bash ./env.sh
 COPY .env .
 RUN chmod +x ./env.sh
 EXPOSE 5000
-#CMD ["nginx", "-g", "daemon off;"]
-CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/bash", "-c", ". ./.env && echo \"Configured LDS endpoint: $REACT_APP_LDS\" && /usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
