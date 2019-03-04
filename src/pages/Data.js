@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Divider, Grid, Header, Icon, List, Menu, Segment, Table} from "semantic-ui-react";
 import {Query} from "react-apollo";
 import gql from 'graphql-tag';
+import DataVersionList from "../components/data/DataVersions";
 
 const DataListEmpty = () => (
   <Segment placeholder>
@@ -96,40 +97,6 @@ const GET_UNIT_DATASET = gql`
     }
 `;
 
-/**
- * Lists the versions of a dataset.
- */
-const DataList = ({id}) => (
-  <Segment>
-    <List divided relaxed>
-      <List.Item>
-        <List.Icon name='github' size='large' verticalAlign='middle'/>
-        <List.Content>
-          <List.Header as='a'>2008-09-15T15:53:00</List.Header>
-          <List.Description as='a'>Updated 10 mins ago</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item>
-        <List.Icon name='github' size='large' verticalAlign='middle'/>
-        <List.Content>
-          <List.Header as='a'>2008-09-15T15:53:00</List.Header>
-          <List.Description as='a'>Updated 22 mins ago</List.Description>
-        </List.Content>
-      </List.Item>
-      <List.Item>
-        <List.Icon name='github' size='large' verticalAlign='middle'/>
-        <List.Content>
-          <List.Header as='a'>2008-09-15T15:53:00</List.Header>
-          <List.Description as='a'>Updated 34 mins ago</List.Description>
-        </List.Content>
-      </List.Item>
-      <Header textAlign="center">
-        <Button primary>Upload new data</Button>
-      </Header>
-    </List>
-  </Segment>
-);
-
 const DatasetHeader = ({loading = false, name, description}) => (
   loading ?
     <Header as='h1' dividing icon={{name: 'spinner', color: 'teal', loading: true}}/> :
@@ -198,7 +165,7 @@ const DataTable = () => (
           <Icon disabled name='area graph'/>Measure
         </Table.HeaderCell>
         <Table.HeaderCell style={{color: "#00ad11"}}>
-          <Icon disabled name='sticky note outline '/>Attribute
+          <Icon disabled name='sticky note outline' />Attribute
         </Table.HeaderCell>
       </Table.Row>
     </Table.Header>
@@ -288,7 +255,7 @@ const Data = ({languageCode}) => (
         datasets.push({id, name, description})
       }
 
-      // TODO:
+      // TODO: Change when query with id is implemented.
       const [{
         cursor: id,
         node: {
@@ -304,7 +271,7 @@ const Data = ({languageCode}) => (
           <Grid>
             <Grid.Row>
               <Grid.Column width={4}>
-                <DataList id={id} languageCode={languageCode}/>
+                <DataVersionList id={id} languageCode={languageCode}/>
               </Grid.Column>
               <Grid.Column width={12}>
                 {/* TODO: Make this pretty <DataHeader languageCode={languageCode}/>*/}

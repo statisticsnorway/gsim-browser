@@ -9,6 +9,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import ApolloClient from "apollo-boost";
 import {ApolloProvider} from "react-apollo";
+import {AxiosProvider} from "react-axios";
+import * as axios from "axios";
 
 let endpoint
 
@@ -21,10 +23,6 @@ if (window._env_.REACT_APP_LDS === undefined) {
     endpoint = window._env_.REACT_APP_LDS + '/'
   }
 }
-
-const client = new ApolloClient({
-  uri: 'http://35.228.232.124/graphql'
-});
 
 console.log("Environment is: ", window._env_)
 
@@ -39,11 +37,22 @@ const properties = {
   user: 'Test'
 }
 
+const client = new ApolloClient({
+  uri: 'http://35.228.232.124/graphql'
+});
+
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:8080',
+  timeout: -1
+});
+
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <BrowserRouter>
-      <App {...properties} />
-    </BrowserRouter>
-  </ApolloProvider>,
+  <AxiosProvider instance={axiosInstance}>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <App {...properties} />
+      </BrowserRouter>
+    </ApolloProvider>
+  </AxiosProvider>,
   document.getElementById('root')
 )

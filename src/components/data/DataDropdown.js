@@ -55,7 +55,7 @@ const DataDropdown = ({languageCode, disabled}) => (
       return <Dropdown item scrolling text={label}>
         <Dropdown.Menu>
           {datasets.map(({id, name}) => (
-            <Dropdown.Item as={Link} to={`/gsim/data/${id}`} content={name}/>
+            <Dropdown.Item key={id} as={Link} to={`/gsim/data/${id}`} content={name}/>
           ))}
         </Dropdown.Menu>
       </Dropdown>;
