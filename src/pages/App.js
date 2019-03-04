@@ -21,6 +21,7 @@ import Home from './Home'
 import Import from '../components/Import'
 import NotFound from './NotFound'
 import Data from "./Data";
+import DataDropdown from "../components/data/DataDropdown";
 
 class App extends Component {
   constructor (props) {
@@ -147,11 +148,9 @@ class App extends Component {
             </Dropdown.Menu>
           </Dropdown>
           <Menu.Item as={Link} to='/gsim/import' content={UI.IMPORT[languageCode]} name='import' />
-          <Dropdown item text={UI.DATA_MENU[languageCode]} scrolling disabled={!ready}>
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={"/gsim/data/datasetId"} content="Dataset name" />
-            </Dropdown.Menu>
-          </Dropdown>
+
+          <DataDropdown languageCode={languageCode}/>
+
           <Menu.Menu position='right'>
             <Menu.Item>
               <Input labelPosition='right' value={namespace} onChange={this.changeNamespace}>

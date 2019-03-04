@@ -1,5 +1,7 @@
 import React from 'react';
 import {Button, Divider, Grid, Header, Icon, List, Menu, Segment, Table} from "semantic-ui-react";
+import {Query} from "react-apollo";
+import gql from 'graphql-tag';
 
 const DataListEmpty = () => (
   <Segment placeholder>
@@ -11,7 +13,93 @@ const DataListEmpty = () => (
   </Segment>
 );
 
-const DataList = () => (
+const response = {
+  "data": {
+    "UnitDataSet": {
+      "edges": [
+        {
+          "cursor": "b9c10b86-5867-4270-b56e-ee7439fe381e",
+          "node": {
+            "name": [
+              {
+                "languageCode": "en",
+                "languageText": "PersonWithIncomeDataset"
+              }
+            ],
+            "description": [
+              {
+                "languageCode": "en",
+                "languageText": "Persons with income in Norway per 2018-01-01"
+              }
+            ]
+          }
+        },
+        {
+          "cursor": "d7f1a566-b906-4561-92cb-4758b766335c",
+          "node": {
+            "name": [
+              {
+                "languageCode": "en",
+                "languageText": "FamilyDataset"
+              }
+            ],
+            "description": [
+              {
+                "languageCode": "en",
+                "languageText": "Dataset for families in Norway per 2018-01-01"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+
+const GET_ONE = gql`
+    query getOne($id:String!)  {
+        UnitDataSet(after:$id, ) {
+            edges {
+                cursor
+                node {
+                    name {
+                        languageCode
+                        languageText
+                    }
+                    description {
+                        languageCode
+                        languageText
+                    }
+                }
+            }
+        }
+    }
+`;
+
+const GET_UNIT_DATASET = gql`
+    query listDatasets {
+        UnitDataSet {
+            edges {
+                cursor
+                node {
+                    name {
+                        languageCode
+                        languageText
+                    }
+                    description {
+                        languageCode
+                        languageText
+                    }
+                }
+            }
+        }
+    }
+`;
+
+/**
+ * Lists the versions of a dataset.
+ */
+const DataList = ({id}) => (
   <Segment>
     <List divided relaxed>
       <List.Item>
@@ -42,9 +130,11 @@ const DataList = () => (
   </Segment>
 );
 
-const DatasetHeader = () => (
-  <Header as='h1' content="Dataset name" subheader="Dataset description" dividing
-          icon={{name: 'list alternate outline', color: 'teal'}}/>
+const DatasetHeader = ({loading = false, name, description}) => (
+  loading ?
+    <Header as='h1' dividing icon={{name: 'spinner', color: 'teal', loading: true}}/> :
+    <Header as='h1' content={name} subheader={description} dividing
+            icon={{name: 'list alternate outline', color: 'teal'}}/>
 );
 
 const DataHeader = () => (
@@ -52,7 +142,8 @@ const DataHeader = () => (
     <Table.Header>
       <Table.Row>
         <Table.HeaderCell as='h4' colSpan={2}>Uploaded on Tuesday, February 26, 2019 (GMT+1) by
-          Hadrien</Table.HeaderCell>
+          Hadrien
+        </Table.HeaderCell>
       </Table.Row>
     </Table.Header>
     <Table.Body>
@@ -93,6 +184,9 @@ const DataHeader = () => (
   </Table>
 );
 
+/**
+ * Displays data.
+ */
 const DataTable = () => (
   <Table compact celled selectable>
     <Table.Header>
@@ -173,22 +267,55 @@ const DataTable = () => (
 )
 
 const Data = ({languageCode}) => (
-  <div>
-    <DatasetHeader languageCode={languageCode}/>
-    <Divider hidden/>
-    <Grid>
-      <Grid.Row>
-        <Grid.Column width={4}>
-          <DataListEmpty languageCode={languageCode}/>
-          <DataList languageCode={languageCode}/>
-        </Grid.Column>
-        <Grid.Column width={12}>
-          <DataHeader languageCode={languageCode}/>
-          <DataTable languageCode={languageCode}/>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  </div>
+  <Query query={GET_UNIT_DATASET}>
+    {({loading, error, data}) => {
+      if (loading) return <DatasetHeader loading/>;
+
+      // TODO: Improve.
+      if (error) return `Error!` + JSON.stringify(error);
+
+      // Extract the UnitDataSet.
+      const datasets = [];
+      const {UnitDataSet: {edges}} = data;
+      for (const edge of edges) {
+        const {
+          cursor: id,
+          node: {
+            name: [{languageText: name}],
+            description: [{languageText: description}]
+          }
+        } = edge;
+        datasets.push({id, name, description})
+      }
+
+      // TODO:
+      const [{
+        cursor: id,
+        node: {
+          name: [{languageText: name}],
+          description: [{languageText: description}]
+        }
+      }] = edges;
+
+      return (
+        <div>
+          <DatasetHeader name={name} description={description}/>
+          <Divider hidden/>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={4}>
+                <DataList id={id} languageCode={languageCode}/>
+              </Grid.Column>
+              <Grid.Column width={12}>
+                {/* TODO: Make this pretty <DataHeader languageCode={languageCode}/>*/}
+                <DataTable id={id} version={null} languageCode={languageCode}/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </div>
+      );
+    }}
+  </Query>
 );
 
 export default Data;

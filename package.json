@@ -8,8 +8,12 @@
     "url": "https://github.com/statisticsnorway/dc-gsim-browser"
   },
   "dependencies": {
+    "apollo-boost": "^0.3.1",
+    "graphql": "^14.1.1",
+    "graphql-tag": "^2.10.1",
     "moment": "^2.23.0",
     "react": "^16.6.3",
+    "react-apollo": "^2.5.1",
     "react-components-library": "https://github.com/statisticsnorway/react-components-library.git",
     "react-datepicker": "^1.8.0",
     "react-dom": "^16.6.3",
@@ -20,7 +24,7 @@
     "semantic-ui-react": "^0.84.0"
   },
   "scripts": {
-    "start" : "chmod +x ./docker/env.bash && ./docker/env.bash && cp ./env-config.js ./public/ && react-scripts start",
+    "start": "chmod +x ./docker/env.bash && ./docker/env.bash && cp ./env-config.js ./public/ && react-scripts start",
     "build": "sh -ac '. ./.env; react-scripts build'",
     "test": "react-scripts test",
     "coverage": "react-scripts test --coverage --collectCoverageFrom=**/src/** --collectCoverageFrom=!**/src/index.js --collectCoverageFrom=!**/src/utilities/Fetch.js",
