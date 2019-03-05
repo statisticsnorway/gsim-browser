@@ -12,15 +12,30 @@ import {ApolloProvider} from "react-apollo";
 import {AxiosProvider} from "react-axios";
 import * as axios from "axios";
 
-let endpoint
-
-if (window._env_.REACT_APP_LDS === undefined) {
-  endpoint = 'http://localhost:9090/'
+// TODO: This is too big.
+let ldsURL, ldsDataURL, graphqlURL
+  if (window._env_.REACT_APP_LDS === undefined) {
+  ldsURL = 'http://localhost:9090/'
 } else {
-  endpoint = window._env_.REACT_APP_LDS
-
-  if (!endpoint.endsWith('/')) {
-    endpoint = window._env_.REACT_APP_LDS + '/'
+  ldsURL = window._env_.REACT_APP_LDS
+  if (!ldsURL.endsWith('/')) {
+    ldsURL = window._env_.REACT_APP_LDS + '/'
+  }
+}
+if (window._env_.REACT_APP_LDS_DATA === undefined) {
+  ldsDataURL = 'http://localhost:8080/'
+} else {
+  ldsDataURL = window._env_.REACT_APP_LDS_DATA
+  if (!ldsURL.endsWith('/')) {
+    ldsDataURL = window._env_.REACT_APP_LDS_DATA + '/'
+  }
+}
+if (window._env_.REACT_APP_LDS_GRAPHQL === undefined) {
+  graphqlURL = ldsURL + 'graphql'
+} else {
+  graphqlURL = window._env_.REACT_APP_LDS_GRAPHQL
+  if (!ldsURL.endsWith('/')) {
+    graphqlURL = window._env_.REACT_APP_LDS_GRAPHQL + '/'
   }
 }
 
@@ -29,7 +44,7 @@ console.log("Environment is: ", window._env_)
 const properties = {
   name: 'GSIM',
   producer: 'GSIM',
-  endpoint: endpoint,
+  endpoint: ldsURL,
   namespace: 'data/',
   route: '/gsim/',
   languageCode: 'en',
@@ -38,11 +53,11 @@ const properties = {
 }
 
 const client = new ApolloClient({
-  uri: 'http://35.228.232.124/graphql'
+  uri: graphqlURL
 });
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: ldsDataURL,
   timeout: -1
 });
 
