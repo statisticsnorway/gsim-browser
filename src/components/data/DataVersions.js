@@ -1,32 +1,33 @@
 import React from 'react';
 import {Get} from 'react-axios';
-import {Button, Header, Icon, List, Message, Placeholder, Segment} from "semantic-ui-react";
+import {Header, Icon, List, Message, Placeholder, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import Moment from "react-moment";
 
 // TODO: Use language code.
 
-const DataVersionListLoading = () => (<Segment loading><Placeholder>
-    <Placeholder.Header image>
-      <Placeholder.Line/>
-      <Placeholder.Line/>
-    </Placeholder.Header>
-  </Placeholder>
+const DataVersionListLoading = () => (
+  <Segment loading attached>
+    <Placeholder>
+      <Placeholder.Header image>
+        <Placeholder.Line/>
+        <Placeholder.Line/>
+      </Placeholder.Header>
+    </Placeholder>
   </Segment>
 );
 
 const DataVersionListEmpty = () => (
-  <Segment placeholder>
+  <Segment attached placeholder>
     <Header icon>
       <Icon name='file outline'/>
       No data for this dataset.
     </Header>
-    <Button primary>Upload data</Button>
   </Segment>
 );
 
 const DataVersionListError = ({error}) => (
-  <Segment>
+  <Segment attached>
     <Message negative attached='top'>
       <Message.Header>Could not load versions.</Message.Header>
       <p>{error.toString()}</p>
@@ -35,7 +36,7 @@ const DataVersionListError = ({error}) => (
 );
 
 const DataVersionListNormal = ({datasetId, data}) => (
-  <Segment>
+  <Segment attached>
     <List divided relaxed>
       {data.map((version, idx) => (
         <List.Item key={idx}>

@@ -1,9 +1,10 @@
 import React from 'react';
-import {Divider, Grid, Header} from "semantic-ui-react";
+import {Divider, Grid, Header, Segment} from "semantic-ui-react";
 import {Query} from "react-apollo";
 import gql from 'graphql-tag';
 import DataVersionList from "../components/data/DataVersions";
 import DataTable from "../components/data/DataTable";
+import DataUpload from "../components/data/DataUpload";
 
 const GET_UNIT_DATASET = gql`
     query listDatasets {
@@ -70,6 +71,9 @@ const Data = ({languageCode}) => (
           <Grid>
             <Grid.Row>
               <Grid.Column width={4}>
+                <Header as='h2' attached='top'>
+                  <DataUpload datasetId={id}/>
+                </Header>
                 <DataVersionList datasetId={id} languageCode={languageCode}/>
               </Grid.Column>
               <Grid.Column width={12}>
