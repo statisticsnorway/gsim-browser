@@ -3,6 +3,7 @@ import {Get} from 'react-axios';
 import {Header, Icon, List, Message, Placeholder, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import Moment from "react-moment";
+import {humanFileSize} from "./DataUpload";
 
 // TODO: Use language code.
 
@@ -43,7 +44,8 @@ const DataVersionListNormal = ({datasetId, data}) => (
           <List.Icon name='file outline' size='large' verticalAlign='middle'/>
           <List.Content>
             <List.Header as={Link} to={`/gsim/data/${datasetId}/${version.id}`}>{version.id}</List.Header>
-            <List.Description as='a'><Moment fromNow>{version.createdAt}</Moment></List.Description>
+            <List.Description as='a'>Created: <Moment fromNow>{version.createdAt}</Moment></List.Description>
+            <List.Description as='a'>Size: {humanFileSize(version.size)} ({version.rows} rows)</List.Description>
           </List.Content>
         </List.Item>
       ))}

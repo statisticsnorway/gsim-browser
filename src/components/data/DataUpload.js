@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Message, Progress} from "semantic-ui-react";
 
-function humanFileSize(bytes, si) {
+export function humanFileSize(bytes, si) {
   let thresh = si ? 1000 : 1024;
   if (Math.abs(bytes) < thresh) {
     return bytes + ' B';
