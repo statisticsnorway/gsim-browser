@@ -65,15 +65,16 @@ class DataUpload extends Component {
     await this.setStatePromise({upload: true, error: false, loaded: 0, total: 0});
     try {
       const file = event.target.files[0];
+      const contentTypeHeader = {'Content-Type': file.type};
       const {
         headers: {
           location: uploadHandle
         }
-      } = await axios.post(`/data/${this.props.datasetId}/upload`);
+      } = await axios.post(`/data/${this.props.datasetId}/upload`, null, {
+        headers: contentTypeHeader
+      });
       await axios.post(uploadHandle, file, {
-        headers: {
-          'Content-Type': file.type
-        },
+        headers: contentTypeHeader,
         onUploadProgress: ProgressEvent => {
           this.setState({
             loaded: ProgressEvent.loaded,
@@ -102,7 +103,8 @@ class DataUpload extends Component {
         {upload && <Progress percent={loaded / total * 100} error={error} size='small'>
           {error
             ? <Message error>{error.message}</Message>
-            : <span>{ (loaded / total * 100).toFixed(1) }% | {humanFileSize(loaded, true)} / {humanFileSize(total, true)}</span>
+            :
+            <span>{(loaded / total * 100).toFixed(1)}% | {humanFileSize(loaded, true)} / {humanFileSize(total, true)}</span>
           }
         </Progress>}
 
