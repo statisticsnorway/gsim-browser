@@ -217,8 +217,10 @@ class App extends Component {
             <Route path='/gsim/import' exact component={() => <Import endpoint={endpoint} namespace={namespace}
                                                                       languageCode={languageCode} />} />
 
-            <Route path='/gsim/data' component={() => <Data endpoint={endpoint} namespace={namespace}
-                                                                      languageCode={languageCode} />} />
+            <Route path='/gsim/data/:datasetId/:versionId?'
+                   render={({match: {params: {datasetId}}}) => (
+                     <Data datasetId={datasetId} endpoint={endpoint}
+                           namespace={namespace} languageCode={languageCode} />)} />
 
             <Route component={({location}) => <NotFound location={location} languageCode={languageCode} />} />
           </Switch>

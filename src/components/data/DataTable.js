@@ -2,7 +2,7 @@ import React from 'react';
 import {Get} from "react-axios";
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
-import {Header, Icon, Menu, Message, Placeholder, Segment, Table} from "semantic-ui-react";
+import {Header, Icon, Menu, Message, Pagination, Placeholder, Segment, Table} from "semantic-ui-react";
 
 // TODO: Move to file.
 const GET_UNIT_DATASET_STRUCTURE = gql`
@@ -124,32 +124,36 @@ const DataTableHeaderLoading = () => (
 );
 
 const DataTableRowsEmpty = () => (
-  <Table.Row>
-    <Segment placeholder>
-      <Header icon>
-        <Icon name='table'/>
-        This dataset is empty.
-      </Header>
-    </Segment>
-  </Table.Row>
+  <Table.Body>
+    <Table.Row>
+      <Segment placeholder>
+        <Header icon>
+          <Icon name='table'/>
+          This dataset is empty.
+        </Header>
+      </Segment>
+    </Table.Row>
+  </Table.Body>
 );
 
 const DataTableRowsError = ({error}) => (
-  <Table.Row >
-    <Segment>
-      <Message negative attached='top'>
-        <Message.Header>Could not load dataset data.</Message.Header>
-        <p>{error.toString()}</p>
-      </Message>
-    </Segment>
-  </Table.Row>
+  <Table.Body>
+    <Table.Row>
+      <Segment>
+        <Message negative attached='top'>
+          <Message.Header>Could not load dataset data.</Message.Header>
+          <p>{error.toString()}</p>
+        </Message>
+      </Segment>
+    </Table.Row>
+  </Table.Body>
 );
 
 /**
  * A numRows by numColumns loading table.
  */
 const DataTableRowsLoading = ({numRows = 5, numColumns = 3}) => (
-  <>
+  <Table.Body>
     {[...Array(numColumns).keys()].map(rowIdx => (
       <Table.Row key={rowIdx}>
         {[...Array(numColumns).keys()].map(colIdx => (
@@ -161,35 +165,43 @@ const DataTableRowsLoading = ({numRows = 5, numColumns = 3}) => (
         ))}
       </Table.Row>
     ))}
-  </>
+  </Table.Body>
 );
 
 const DataTableRowsNormal = ({columns, data}) => {
   // Normalize columns.
-  return data.map((datum, idx) => (
-    <Table.Row key={idx}>
-      {columns.map(({name, type}) => (
-        <Table.Cell key={name + idx}>
-          {datum[name]}
-        </Table.Cell>
-      ))}
-    </Table.Row>
-  ));
+  return <Table.Body>
+    {data.map((datum, idx) => (
+      <Table.Row key={idx}>
+        {columns.map(({name, type}) => (
+          <Table.Cell key={name + idx}>
+            {datum[name]}
+          </Table.Cell>
+        ))}
+      </Table.Row>
+    ))}
+  </Table.Body>;
 };
 
-const DataTableFooter = ({colSpan}) => (
+/**
+ * Wrapper for Pagination.
+ *
+ *
+ * @param colSpan since it is inside a table, we need a colSpan.
+ */
+const DataTableFooter = ({onNext, onPrevious, colSpan}) => (
   <Table.Footer>
     <Table.Row>
       <Table.HeaderCell colSpan={colSpan}>
         <Menu floated='right' pagination>
-          <Menu.Item as='a' icon>
+          <Menu.Item as='a' icon onClick={onPrevious}>
             <Icon name='chevron left'/>
           </Menu.Item>
-          <Menu.Item as='a'>1</Menu.Item>
-          <Menu.Item as='a'>2</Menu.Item>
-          <Menu.Item as='a'>3</Menu.Item>
-          <Menu.Item as='a'>4</Menu.Item>
-          <Menu.Item as='a' icon>
+          {/*<Menu.Item as='a'>1</Menu.Item>*/}
+          {/*<Menu.Item as='a'>2</Menu.Item>*/}
+          {/*<Menu.Item as='a'>3</Menu.Item>*/}
+          {/*<Menu.Item as='a'>4</Menu.Item>*/}
+          <Menu.Item as='a' icon onClick={onNext}>
             <Icon name='chevron right'/>
           </Menu.Item>
         </Menu>
@@ -250,17 +262,23 @@ const DataTable = ({datasetId, versionId}) => (
         const columns = normalizeColumns(data);
         return <>
           <DataTableHeader columns={columns}/>
-          <Table.Body><Get url={`data/${datasetId}/${versionId}`} isReady={!loading}>
-            {(error, response, loading) => {
+
+          <Get url={`data/${datasetId}/${versionId}`} isReady={!loading} params={{size: 20, start: 0}}>
+            {(error, response, loading, makeRequest) => {
               if (error) return <DataTableRowsError error={error}/>;
               if (loading || !response) return <DataTableRowsLoading numColumns={columns.columns.length}/>;
               if (response.data && !response.data) return <DataTableRowsEmpty/>;
 
-              return <DataTableRowsNormal columns={columns.columns} data={response.data}/>
+              const {start = 0, size = 20} = response.config.params;
+              console.log(response);
+              return <>
+                <DataTableRowsNormal columns={columns.columns} data={response.data}/>
+                <DataTableFooter onPrevious={() => makeRequest({params: {start: start - size, size}})}
+                                 onNext={() => makeRequest({params: {start: start + size, size}})}
+                                 colSpan={columns.columns.length}/>
+              </>
             }}
           </Get>
-          </Table.Body>
-          <DataTableFooter colSpan={columns.columns.length}/>
         </>
       }}
     </Query>
