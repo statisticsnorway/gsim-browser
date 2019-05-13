@@ -26,14 +26,6 @@ export const MESSAGES = {
     en: 'Object is missing an id',
     nb: 'Objektet mangler id'
   },
-  SORRY: {
-    en: 'Sorry :\'(',
-    nb: 'Beklager :\'('
-  },
-  PAGE_NOT_FOUND: {
-    en: 'Could not find anything located at',
-    nb: 'Fant desverre ingenting under'
-  },
   PROPERTY_ERROR_CASE: {
     en: 'A property starts with uppercase',
     nb: 'Et objektelement starter med stor bokstav'
@@ -98,12 +90,12 @@ export const UI = {
     en: 'Norwegian',
     nb: 'Norsk'
   },
+  SELECT_FILE: {
+    en: 'Select files',
+    nb: 'Velg filer'
+  },
   SHOW_ALL: {
     en: 'Show all',
     nb: 'Vis alle'
-  },
-  UPLOAD: {
-    en: 'Select files',
-    nb: 'Velg filer'
   }
 }

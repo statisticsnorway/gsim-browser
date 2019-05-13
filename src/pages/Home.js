@@ -5,7 +5,7 @@ import { UI } from '../utilities/Enum'
 
 class Home extends Component {
   render () {
-    const {languageCode, imageSource} = this.props
+    const { languageCode, imageSource } = this.props
 
     return (
       <Container fluid textAlign='center'>

@@ -7,10 +7,9 @@ import { SchemaHandler } from 'react-components-library'
 import App from '../pages/App'
 import Home from '../pages/Home'
 import Import from '../components/Import'
-import NotFound from '../pages/NotFound'
 import { LANGUAGES, UI } from '../utilities/Enum'
 
-jest.mock('react-components-library', () => ({SchemaHandler: jest.fn()}))
+jest.mock('react-components-library', () => ({ SchemaHandler: jest.fn() }))
 SchemaHandler.mockImplementation(() => Promise.resolve([]))
 
 // Not so proper workaround to wait for render part of component to update. Creates race-condition. Wait for fix in Jest/Enzyme.
@@ -20,7 +19,7 @@ const properties = {
   name: 'GSIM',
   producer: 'GSIM',
   endpoint: 'http://localhost:9090/',
-  namespace: 'data/',
+  namespace: 'ns/',
   route: '/gsim/',
   languageCode: 'en',
   specialFeatures: true,
@@ -44,28 +43,15 @@ describe('App', () => {
         ' (' + UI.LANGUAGE_CHOICE[component.state('languageCode')] + ')')
   })
 
-  it('NotFound rendered on base page', () => {
+  it('Home rendered on base page', () => {
     const component = mount(
       <MemoryRouter initialEntries={['/']}>
         <App {...properties} />
       </MemoryRouter>
     )
 
-    expect(component.find(Home)).toHaveLength(0)
-    expect(component.find(Import)).toHaveLength(0)
-    expect(component.find(NotFound)).toHaveLength(1)
-  })
-
-  it('Home rendered on /gsim', () => {
-    const component = mount(
-      <MemoryRouter initialEntries={['/gsim']}>
-        <App {...properties} />
-      </MemoryRouter>
-    )
-
     expect(component.find(Home)).toHaveLength(1)
     expect(component.find(Import)).toHaveLength(0)
-    expect(component.find(NotFound)).toHaveLength(0)
   })
 
   it('Import rendered on /gsim/import', () => {
@@ -77,7 +63,6 @@ describe('App', () => {
 
     expect(component.find(Home)).toHaveLength(0)
     expect(component.find(Import)).toHaveLength(1)
-    expect(component.find(NotFound)).toHaveLength(0)
   })
 
   it('Namespace value changes correctly', () => {
@@ -87,7 +72,7 @@ describe('App', () => {
       </MemoryRouter>
     )
 
-    expect(component.find('input').at(0).prop('value')).toEqual('data/')
+    expect(component.find('input').at(0).prop('value')).toEqual('ns/')
     expect(component.find('input').at(0).prop('disabled')).toEqual(true)
     expect(component.find(App).state('namespaceLocked')).toEqual(true)
 
@@ -96,9 +81,9 @@ describe('App', () => {
     expect(component.find('input').at(0).prop('disabled')).toEqual(false)
     expect(component.find(App).state('namespaceLocked')).toEqual(false)
 
-    component.find('input').at(0).simulate('change', {target: {value: 'ns/'}})
+    component.find('input').at(0).simulate('change', { target: { value: 'data/' } })
 
-    expect(component.find('input').at(0).prop('value')).toEqual('ns/')
+    expect(component.find('input').at(0).prop('value')).toEqual('data/')
     expect(component.find('input').at(0).prop('disabled')).toEqual(false)
     expect(component.find(App).state('namespaceLocked')).toEqual(false)
 

@@ -6,7 +6,7 @@ import { putData } from '../utilities/Fetch'
 import Import from '../components/Import'
 import { MESSAGES, UI } from '../utilities/Enum'
 
-jest.mock('../utilities/Fetch', () => ({putData: jest.fn()}))
+jest.mock('../utilities/Fetch', () => ({ putData: jest.fn() }))
 putData.mockImplementation(() => Promise.resolve())
 
 // Not so proper workaround to wait for render part of component to update. Creates race-condition. Wait for fix in Jest/Enzyme.
@@ -59,7 +59,7 @@ const goodAgent = {
     }
   ]
 }
-const goodTestFile = new Blob([JSON.stringify(goodAgent)], {type: 'application/json'})
+const goodTestFile = new Blob([JSON.stringify(goodAgent)], { type: 'application/json' })
 goodTestFile.name = 'Good Agent'
 
 const badAgent = {
@@ -108,14 +108,14 @@ const badAgent = {
     }
   ]
 }
-const badTestFile = new Blob([JSON.stringify(badAgent)], {type: 'application/json'})
+const badTestFile = new Blob([JSON.stringify(badAgent)], { type: 'application/json' })
 badTestFile.name = 'Bad Agent'
 
 const wrongAgent = 'Not right'
-const wrongTestFile = new Blob([wrongAgent], {type: 'text/plain'})
+const wrongTestFile = new Blob([wrongAgent], { type: 'text/plain' })
 wrongTestFile.name = 'Wrong Agent'
 
-const invalidTestFile = new Blob([goodAgent], {type: 'application/json'})
+const invalidTestFile = new Blob([goodAgent], { type: 'application/json' })
 invalidTestFile.name = 'Invalid Agent'
 
 const badCaseAgent = {
@@ -165,7 +165,7 @@ const badCaseAgent = {
     }
   ]
 }
-const badCaseFile = new Blob([JSON.stringify(badCaseAgent)], {type: 'application/json'})
+const badCaseFile = new Blob([JSON.stringify(badCaseAgent)], { type: 'application/json' })
 badCaseFile.name = 'Bad case Agent'
 
 const doubleAgent = [
@@ -270,7 +270,7 @@ const doubleAgent = [
     ]
   }
 ]
-const doubleAgentFile = new Blob([JSON.stringify(doubleAgent)], {type: 'application/json'})
+const doubleAgentFile = new Blob([JSON.stringify(doubleAgent)], { type: 'application/json' })
 doubleAgentFile.name = 'Double Agent'
 
 describe('Import', () => {
@@ -285,7 +285,7 @@ describe('Import', () => {
     expect(component.state('totalObjects')).toEqual(0)
     expect(component.state('successfulObjectUploads')).toEqual(0)
 
-    component.find('input').simulate('change', {target: {files: [goodTestFile]}})
+    component.find('input').simulate('change', { target: { files: [goodTestFile] } })
 
     await waitForAsync()
     component.update()
@@ -320,7 +320,7 @@ describe('Import', () => {
     expect(component.state('totalObjects')).toEqual(0)
     expect(component.state('successfulObjectUploads')).toEqual(0)
 
-    component.find('input').simulate('change', {target: {files: [wrongTestFile, invalidTestFile, goodTestFile, badTestFile, badCaseFile, doubleAgentFile]}})
+    component.find('input').simulate('change', { target: { files: [wrongTestFile, invalidTestFile, goodTestFile, badTestFile, badCaseFile, doubleAgentFile] } })
 
     await waitForAsync()
     component.update()
