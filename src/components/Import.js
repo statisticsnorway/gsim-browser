@@ -21,7 +21,7 @@ class Import extends Component {
   }
 
   handleUploadInput (event) {
-    const {languageCode} = this.props
+    const { languageCode } = this.props
     const files = event.target.files
     const length = files.length
 
@@ -52,7 +52,7 @@ class Import extends Component {
   }
 
   handleFile (file) {
-    const {languageCode} = this.props
+    const { languageCode } = this.props
 
     let fileReader
 
@@ -66,12 +66,12 @@ class Import extends Component {
         if (Array.isArray(data)) {
           let length = data.length
 
-          this.setState(prevState => ({totalObjects: prevState.totalObjects - 1}))
+          this.setState(prevState => ({ totalObjects: prevState.totalObjects - 1 }))
 
           data.forEach((value, index) => {
             const filename = '(' + (index + 1) + '/' + length + ') ' + file.name
 
-            this.setState(prevState => ({totalObjects: prevState.totalObjects + 1}))
+            this.setState(prevState => ({ totalObjects: prevState.totalObjects + 1 }))
 
             this.saveDataFromFileToBackend(domain, value, filename)
           })
@@ -108,7 +108,7 @@ class Import extends Component {
 
   checkData (data) {
     return new Promise((resolve, reject) => {
-      const {languageCode} = this.props
+      const { languageCode } = this.props
 
       if (!data.hasOwnProperty('id')) {
         reject(MESSAGES.MISSING_ID[languageCode])
@@ -145,12 +145,12 @@ class Import extends Component {
   }
 
   saveDataFromFileToBackend (domain, data, filename) {
-    const {endpoint, namespace, languageCode} = this.props
+    const { endpoint, namespace, languageCode } = this.props
 
     this.checkData(data).then(() => {
       putData(endpoint + namespace + domain + '/' + data.id, endpoint, data, languageCode).then(() => {
         this.setState(prevState => ({
-          responses: [...prevState.responses, {color: 'green', name: filename, icon: 'check', text: ''}],
+          responses: [...prevState.responses, { color: 'green', name: filename, icon: 'check', text: '' }],
           progressObjects: prevState.progressObjects + 1,
           successfulObjectUploads: prevState.successfulObjectUploads + 1
         }))
@@ -167,18 +167,18 @@ class Import extends Component {
   }
 
   render () {
-    const {ready, progressObjects, totalObjects, successfulObjectUploads, responses} = this.state
-    const {languageCode} = this.props
+    const { ready, progressObjects, totalObjects, successfulObjectUploads, responses } = this.state
+    const { languageCode } = this.props
 
     return (
       <div>
         <Header as='h1' content={UI.IMPORT[languageCode]} subheader={UI.IMPORT_DESCRIPTION[languageCode]} dividing
-                icon={{name: 'share', color: 'teal'}} />
+                icon={{ name: 'share', color: 'teal' }} />
         <Container fluid textAlign='center'>
-          <Button size='massive' color='teal' icon='upload' content={UI.UPLOAD[languageCode]}
+          <Button size='massive' color='teal' icon='upload' content={UI.SELECT_FILE[languageCode]}
                   onClick={this.uploadButtonClick} />
           <input ref={this.fileUploader} type='file' multiple onChange={(event) => {this.handleUploadInput(event)}}
-                 style={{display: 'none'}} accept='application/json' />
+                 style={{ display: 'none' }} accept='application/json' />
           <Divider hidden />
         </Container>
 

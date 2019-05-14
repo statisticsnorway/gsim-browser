@@ -19,7 +19,7 @@ export function putData (url, endpoint, data, languageCode, timeout = 3000) {
       }
     }).then(response => {
       if (response.ok) {
-       resolve()
+        resolve()
       } else {
         response.text().then(text => {
           reject(text + ' (' + url + ')')
