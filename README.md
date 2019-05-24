@@ -32,6 +32,6 @@ reflected unless you run `yarn upgrade`.
 
 ### Docker image
 * `yarn build`
-* `docker build . -t dc-gsim-browser:0.2`
-* `docker run -p 8000:80 dc-gsim-browser:0.2`
+* `docker build . -t gsim-browser:0.2`
+* `docker run -p 8000:80 gsim-browser:0.2`
 - Navigate to `http://localhost:8000/`

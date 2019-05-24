@@ -1,11 +1,11 @@
 # dependencies
 /node_modules
 
-# tests
+# intellij
+/.idea
+
+# testing
 /coverage
 
-# intellij
-.idea
-
-# build
-/build
+# misc
+/.git

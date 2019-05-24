@@ -297,6 +297,9 @@ describe('Import', () => {
     await waitForAsync()
     component.update()
 
+    await waitForAsync()
+    component.update()
+
     expect(component.state('progressObjects')).toEqual(1)
     expect(component.state('totalObjects')).toEqual(1)
     expect(component.state('successfulObjectUploads')).toEqual(1)
@@ -328,6 +331,27 @@ describe('Import', () => {
     expect(component.state('progressObjects')).toEqual(1)
     expect(component.state('totalObjects')).toEqual(6)
     expect(component.state('successfulObjectUploads')).toEqual(0)
+
+    // TODO: Ugly workaround. We should replace all enzyme testing with react-testing-library in the future.
+    //  With new version of enzyme, it seems the combination of waitForAsync() and component.update() only does one tick
+    //  but since state updates 7 times it needs to run 7 times. This was not the case before.
+    await waitForAsync()
+    component.update()
+
+    await waitForAsync()
+    component.update()
+
+    await waitForAsync()
+    component.update()
+
+    await waitForAsync()
+    component.update()
+
+    await waitForAsync()
+    component.update()
+
+    await waitForAsync()
+    component.update()
 
     await waitForAsync()
     component.update()
