@@ -29,9 +29,9 @@ class App extends Component {
       schemas: [],
       message: '',
       languageCode: this.props.languageCode,
-      namespace: this.props.namespace,
+      endpoint: this.props.endpoint,
       specialFeatures: this.props.specialFeatures,
-      namespaceLocked: true
+      endpointLocked: true
     }
   }
 
@@ -62,15 +62,15 @@ class App extends Component {
     }))
   }
 
-  changeNamespace = (event) => {
-    this.setState({ namespace: event.target.value })
+  changeEndpoint = (event) => {
+    this.setState({ endpoint: event.target.value })
   }
 
-  toggleNamespace = () => {
-    this.setState({ namespaceLocked: !this.state.namespaceLocked }, () => {
-      if (this.state.namespaceLocked) {
-        const { specialFeatures, namespace } = this.state
-        const { producer, endpoint, route } = this.props
+  toggleEndpoint = () => {
+    this.setState({ endpointLocked: !this.state.endpointLocked }, () => {
+      if (this.state.endpointLocked) {
+        const { specialFeatures, endpoint } = this.state
+        const { namespace, producer, route } = this.props
         const updatedUrl = endpoint + handleRoute(namespace) + '?schema=embed'
 
         SchemaHandler(updatedUrl, producer, endpoint, namespace, specialFeatures, route).then(schemas => {
@@ -92,8 +92,8 @@ class App extends Component {
 
   toggleSpecialFeatures = () => {
     this.setState({ ready: false }, () => {
-      const { specialFeatures } = this.state
-      const { producer, endpoint, namespace, route } = this.props
+      const { endpoint, specialFeatures } = this.state
+      const { producer, namespace, route } = this.props
       const updatedUrl = endpoint + handleRoute(namespace) + '?schema=embed'
 
       SchemaHandler(updatedUrl, producer, endpoint, namespace, !specialFeatures, route).then(schemas => {
@@ -114,8 +114,8 @@ class App extends Component {
   }
 
   render () {
-    const { ready, schemas, message, languageCode, specialFeatures, namespace, namespaceLocked } = this.state
-    const { producer, route, endpoint, user } = this.props
+    const { ready, schemas, message, languageCode, specialFeatures, endpointLocked, endpoint } = this.state
+    const { producer, route, namespace, user } = this.props
 
     return (
       <Segment basic>
@@ -147,12 +147,12 @@ class App extends Component {
           <Menu.Item as={Link} to='/gsim/import' content={UI.IMPORT[languageCode]} name='import' />
           <Menu.Menu position='right'>
             <Menu.Item>
-              <Input labelPosition='right' value={namespace} onChange={this.changeNamespace}>
-                <Label basic content='Namespace (LDS)' />
-                <input disabled={namespaceLocked} />
+              <Input labelPosition='right' value={endpoint} onChange={this.changeEndpoint}>
+                <Label basic content={`${UI.ENDPOINT[languageCode]} (LDS)`} />
+                <input disabled={endpointLocked} />
                 <Label basic>
-                  <Icon link fitted name={namespaceLocked ? 'lock' : 'unlock'} onClick={this.toggleNamespace}
-                        color={namespaceLocked ? 'red' : 'green'} />
+                  <Icon link fitted name={endpointLocked ? 'lock' : 'unlock'} onClick={this.toggleEndpoint}
+                        color={endpointLocked ? 'red' : 'green'} />
                 </Label>
               </Input>
             </Menu.Item>

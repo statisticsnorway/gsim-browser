@@ -45,6 +45,10 @@ export const UI = {
     en: 'Create new',
     nb: 'Opprett ny'
   },
+  ENDPOINT: {
+    en: 'Endpoint',
+    nb: 'Endepunkt'
+  },
   ENGLISH: {
     en: 'English',
     nb: 'Engelsk'

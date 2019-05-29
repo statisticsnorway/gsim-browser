@@ -18,7 +18,7 @@ export function putData (url, endpoint, data, languageCode, timeout = 3000) {
         'Content-Type': 'application/json; charset=utf-8'
       }
     }).then(response => {
-      if (response.ok) {
+      if (response.status >= 200 && response.status < 300) {
         resolve()
       } else {
         response.text().then(text => {
