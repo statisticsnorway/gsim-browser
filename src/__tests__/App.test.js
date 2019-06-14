@@ -65,32 +65,32 @@ describe('App', () => {
     expect(component.find(Import)).toHaveLength(1)
   })
 
-  it('Namespace value changes correctly', () => {
+  it('Endpoint value changes correctly', () => {
     const component = mount(
       <MemoryRouter>
         <App {...properties} />
       </MemoryRouter>
     )
 
-    expect(component.find('input').at(0).prop('value')).toEqual('ns/')
+    expect(component.find('input').at(0).prop('value')).toEqual('http://localhost:9090/')
     expect(component.find('input').at(0).prop('disabled')).toEqual(true)
-    expect(component.find(App).state('namespaceLocked')).toEqual(true)
+    expect(component.find(App).state('endpointLocked')).toEqual(true)
 
     component.find('i.red.lock.fitted.link.icon').simulate('click')
 
     expect(component.find('input').at(0).prop('disabled')).toEqual(false)
-    expect(component.find(App).state('namespaceLocked')).toEqual(false)
+    expect(component.find(App).state('endpointLocked')).toEqual(false)
 
-    component.find('input').at(0).simulate('change', { target: { value: 'data/' } })
+    component.find('input').at(0).simulate('change', { target: { value: 'http://localhost:9080/' } })
 
-    expect(component.find('input').at(0).prop('value')).toEqual('data/')
+    expect(component.find('input').at(0).prop('value')).toEqual('http://localhost:9080/')
     expect(component.find('input').at(0).prop('disabled')).toEqual(false)
-    expect(component.find(App).state('namespaceLocked')).toEqual(false)
+    expect(component.find(App).state('endpointLocked')).toEqual(false)
 
     component.find('i.green.unlock.fitted.link.icon').simulate('click')
 
     expect(component.find('input').at(0).prop('disabled')).toEqual(true)
-    expect(component.find(App).state('namespaceLocked')).toEqual(true)
+    expect(component.find(App).state('endpointLocked')).toEqual(true)
   })
 
   it('Toggles special features correctly', async () => {

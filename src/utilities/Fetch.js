@@ -21,9 +21,7 @@ export function putData (url, endpoint, data, languageCode, timeout = 3000) {
       if (response.ok) {
         resolve()
       } else {
-        response.text().then(text => {
-          reject(text + ' (' + url + ')')
-        })
+        response.text().then(text => reject(text + ' (' + url + ')'))
       }
     }).catch(error => {
       reject(MESSAGES.COULD_NOT_CONNECT[languageCode] + '\'' + endpoint + '\' (' + error.toString() + ')')
