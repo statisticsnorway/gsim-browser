@@ -13,7 +13,7 @@
     "react-components-library": "https://github.com/statisticsnorway/react-components-library.git",
     "react-datepicker": "^1.8.0",
     "react-dom": "^16.6.3",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.3",
     "react-table": "^6.8.6",
     "semantic-ui-css": "^2.4.0",
