@@ -11,7 +11,7 @@
     "moment": "^2.23.0",
     "react": "^16.6.3",
     "react-components-library": "https://github.com/statisticsnorway/react-components-library.git",
-    "react-datepicker": "^1.8.0",
+    "react-datepicker": "^2.8.0",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.3",
